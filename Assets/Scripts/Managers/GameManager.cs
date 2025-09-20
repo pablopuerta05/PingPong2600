@@ -1,0 +1,71 @@
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GameManager : MonoBehaviour
+{
+    private List<IState> states = new List<IState>();
+
+    #region Singleton
+
+    public static GameManager Instance { get; private set; }
+
+    private void Awake()
+    {
+        states.Add(new MainMenuState(this));
+        states.Add(new GameplayState(this));
+        states.Add(new PausedState(this));
+        states.Add(new GameOverState(this));
+
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(gameObject);
+    }
+
+    #endregion
+
+    public enum GameState
+    {
+        MainMenu,
+        Gameplay,
+        Paused,
+        GameOver
+    }
+
+    // Store the current state of the game
+    public IState currentState;
+
+    // flag to check if the game is over
+    public bool isGameOver = false;
+
+    private void Start()
+    {
+        SetGameState(GameState.MainMenu); // Establecer el estado inicial
+    }
+
+    private void Update()
+    {
+        // Delegamos el comportamiento del estado actual
+        currentState?.Update();
+    }
+
+    // Define the method to change the state of the game
+    public void SetGameState(GameState newState)
+    {
+        // Si hay un estado anterior, llamamos al Exit
+        currentState?.Exit();
+
+        // Establecemos el nuevo estado y llamamos al Enter
+        // En States BUSCA el state, EN DONDE el state.gameState sea igual a newState    
+        currentState = states.Find(state => state.gameState == newState);
+
+        // Llamamos al método Enter del nuevo estado
+        currentState.Enter();
+    }
+}
