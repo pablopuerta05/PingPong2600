@@ -69,7 +69,7 @@ public class Bot : MonoBehaviour
             {
                 animator.Play("backhand"); // otherwise play a backhand animation
             }
-
+            ball.GetComponent<Ball>().hitter = "bot";
 
         }
     }
