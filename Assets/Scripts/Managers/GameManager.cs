@@ -65,6 +65,13 @@ public class GameManager : MonoBehaviour
         // En States BUSCA el state, EN DONDE el state.gameState sea igual a newState    
         currentState = states.Find(state => state.gameState == newState);
 
+        if (currentState == null)
+        {
+            Debug.LogError("Estado no encontrado: " + newState);
+            return;
+        }
+
+
         // Llamamos al método Enter del nuevo estado
         currentState.Enter();
     }
