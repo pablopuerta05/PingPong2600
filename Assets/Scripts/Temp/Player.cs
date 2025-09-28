@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete("New improved player script")]
 public class Player : MonoBehaviour
 {
     public Transform aimTarget; // the target where we aim to land the ball
@@ -17,6 +16,13 @@ public class Player : MonoBehaviour
 
     ShotManager shotManager; // reference to the shotmanager component
     Shot currentShot; // the current shot we are playing to acces it's attributes
+
+    [SerializeField] Transform serveRight;
+    [SerializeField] Transform serveLeft;
+
+    bool servedRight = true;
+
+
 
     private void Start()
     {
@@ -51,23 +57,44 @@ public class Player : MonoBehaviour
             hitting = false;
         }
 
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            hitting = true; // we are trying to hit the ball and aim where to make it land
+            currentShot = shotManager.flatServe; // set our current shot to top spin
+            GetComponent<BoxCollider>().enabled = false;
+            animator.Play("serve-prepare");
+        }
 
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            hitting = true; // we are trying to hit the ball and aim where to make it land
+            currentShot = shotManager.kickServe; // set our current shot to top spin
+            GetComponent<BoxCollider>().enabled = false;
+            animator.Play("serve-prepare");
+        }
+
+        if (Input.GetKeyUp(KeyCode.R) || Input.GetKeyUp(KeyCode.T))
+        {
+            hitting = false;
+            GetComponent<BoxCollider>().enabled = true;
+            ball.transform.position = transform.position + new Vector3(0.2f, 1, 0);
+            Vector3 dir = aimTarget.position - transform.position; // get the direction to where we want to send the ball
+            ball.GetComponent<Rigidbody>().velocity = dir.normalized * currentShot.hitForce + new Vector3(0, currentShot.upForce, 0);
+            animator.Play("serve");
+            ball.GetComponent<Ball>().hitter = Hitter.Player;
+            //ball.GetComponent<Ball>().playing = true;
+        }
 
         if (hitting)  // if we are trying to hit the ball
         {
             aimTarget.Translate(new Vector3(v, 0, 0) * speed * 2 * Time.deltaTime); //translate the aiming gameObject on the court horizontallly
         }
 
-
         if ((h != 0 || v != 0) && !hitting) // if we want to move and we are not hitting the ball
         {
-            transform.Translate(new Vector3(v, 0, h) * speed * Time.deltaTime); // move on the court
+            transform.Translate(new Vector3(h, 0, v) * speed * Time.deltaTime); // move on the court
         }
-
-
-
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
@@ -87,10 +114,9 @@ public class Player : MonoBehaviour
                 animator.Play("backhand");
             }
 
+            ball.GetComponent<Ball>().hitter = Hitter.Player;
             aimTarget.position = aimTargetInitialPosition; // reset the position of the aiming gameObject to it's original position ( center)
 
         }
     }
-
-
 }

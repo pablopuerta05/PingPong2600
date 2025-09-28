@@ -1,4 +1,3 @@
-
 public interface IState
 {
     string Name { get; }

@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -20,36 +16,48 @@ public class UIManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     #endregion
 
     [Header("Screens")]
     public GameObject pauseScreen;
-    public GameObject resultScreen;
-    public GameObject levelUpScreen;
+    public GameObject gameOverScreen;
 
-    public void DisableScreens()
-    {
-        pauseScreen.SetActive(false);
-        resultScreen.SetActive(false);
-        levelUpScreen.SetActive(false);
-    }
-
-    public void OnPlayButtonClicked()
-    {
-        GameManager.Instance.SetGameState(GameManager.GameState.Gameplay);
-    }
-
-    public void OnExitButtonClicked()
-    {
-        Application.Quit();
-    }
+    [Header("ASync Loader")]
+    [SerializeField] private ASyncLoader asyncLoader;
 
     public void OnPauseButtonClicked()
     {
         GameManager.Instance.SetGameState(GameManager.GameState.Paused);
+    }
+
+    public void OnResumeGameClicked()
+    {
+        GameManager.Instance.SetGameState(GameManager.GameState.Gameplay);
+    }
+
+    public void OnMainMenuButtonClicked()
+    {
+        asyncLoader.LoadLevelBtn("MainMenu");
+        GameManager.Instance.SetGameState(GameManager.GameState.MainMenu);
+    }
+
+    public void OnRestartButtonClicked()
+    {
+        asyncLoader.LoadLevelBtn("GameScene");
+        GameManager.Instance.SetGameState(GameManager.GameState.Gameplay);
+        ScoreManager.Instance.ResetScores();
+        gameOverScreen.SetActive(false);
+    }
+
+    public void PauseGame()
+    {
+        pauseScreen.SetActive(true);
+    }
+
+    public void ResumeGame()
+    {
+        pauseScreen.SetActive(false);
     }
 }

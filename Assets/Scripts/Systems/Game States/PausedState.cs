@@ -15,15 +15,30 @@ public class PausedState : IState
     public void Enter()
     {
         Time.timeScale = 0f;
+        UIManager.Instance.PauseGame();
     }
 
     public void Exit()
     {
-        Time.timeScale = 1f;
+        Time.timeScale = 1.0f;
+        UIManager.Instance.ResumeGame();
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
+        CheckForResume();
+    }
+
+    private void CheckForResume()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.SetGameState(GameManager.GameState.Gameplay);
+
+            if (gameManager.currentState.gameState == GameManager.GameState.Gameplay)
+            {
+                Debug.Log("Saliendo de la pausa.");
+            }
+        }
     }
 }

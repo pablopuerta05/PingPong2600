@@ -1,10 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+[System.Obsolete("New Improved Bot")]
 public class Bot : MonoBehaviour
 {
-
     float speed = 40; // moveSpeed
     Animator animator;
     public Transform ball;
@@ -16,7 +14,6 @@ public class Bot : MonoBehaviour
     Vector3 targetPosition; // position to where the bot will want to move
 
     ShotManager shotManager; // shot manager class/component
-
 
     void Start()
     {
@@ -69,7 +66,7 @@ public class Bot : MonoBehaviour
             {
                 animator.Play("backhand"); // otherwise play a backhand animation
             }
-
+            ball.GetComponent<Ball>().hitter = Hitter.Bot;
 
         }
     }

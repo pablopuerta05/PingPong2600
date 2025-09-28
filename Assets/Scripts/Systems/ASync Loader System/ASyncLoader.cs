@@ -37,4 +37,14 @@ public class ASyncLoader : MonoBehaviour
             yield return null;
         }
     }
+
+    public void OnPlayButtonClicked()
+    {
+        GameManager.Instance.SetGameState(GameManager.GameState.Gameplay);
+    }
+
+    public void OnExitButtonClicked()
+    {
+        Application.Quit();
+    }
 }

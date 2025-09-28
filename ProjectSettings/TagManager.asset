@@ -5,7 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - Ball
-  - Wall
+  - OutBot
+  - OutPlayer
+  - Net
   layers:
   - Default
   - TransparentFX

@@ -14,16 +14,16 @@ public class GameOverState : IState
 
     public void Enter()
     {
-        throw new System.NotImplementedException();
+        gameManager.isGameOver = true;
     }
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        gameManager.isGameOver = false;
     }
 
     public void Update()
     {
-        throw new System.NotImplementedException();
+
     }
 }

@@ -19,11 +19,24 @@ public class GameplayState : IState
 
     public void Exit()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public void Update()
     {
-        
+        CheckForPause();
+    }
+
+    private void CheckForPause()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            gameManager.SetGameState(GameManager.GameState.Paused);
+
+            if (gameManager.currentState.gameState == GameManager.GameState.Paused)
+            {
+                Debug.Log("El juego está en pausa.");
+            }
+        }
     }
 }
