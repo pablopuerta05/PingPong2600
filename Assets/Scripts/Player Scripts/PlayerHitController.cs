@@ -38,7 +38,7 @@ public class PlayerHitController : MonoBehaviour
             ExecuteShot(ballCollider, aim.TargetPosition, transform);
             Vector3 dir = ballCollider.transform.position - transform.position;
             animationHandler.PlayShot(dir);
-            aim.ResetAim();
+            //aim.ResetAim();
         }
     }
 

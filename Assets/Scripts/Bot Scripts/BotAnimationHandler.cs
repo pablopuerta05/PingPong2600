@@ -5,8 +5,8 @@ public class BotAnimationHandler : IAnimationHandler
     public void PlayAnimation(Animator animator, Vector3 ballDir)
     {
         if (ballDir.x >= 0)
-            animator.Play("forehand");
+            animator.Play("Forehand");
         else
-            animator.Play("backhand");
+            animator.Play("Backhand");
     }
 }

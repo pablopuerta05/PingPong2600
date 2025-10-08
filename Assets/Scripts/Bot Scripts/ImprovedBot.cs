@@ -3,7 +3,10 @@ using UnityEngine;
 public class ImprovedBot : MonoBehaviour
 {
     [Header("Settings")]
-    [SerializeField] float speed = 40f;
+    [SerializeField] private float[] speed;
+    [SerializeField] private float actualSpeed;
+    private float timer;
+    [SerializeField] private float delay;
     [SerializeField] Transform ball;
     [SerializeField] Transform[] targets;
     [SerializeField] ShotSO[] availableShots;
@@ -15,6 +18,8 @@ public class ImprovedBot : MonoBehaviour
 
     void Start()
     {
+        actualSpeed = speed[Random.Range(0, speed.Length)];
+
         animator = GetComponent<Animator>();
 
         movement = new HorizontalMovement();
@@ -24,7 +29,15 @@ public class ImprovedBot : MonoBehaviour
 
     void Update()
     {
-        movement.MoveTowardsBall(transform, ball, speed);
+        timer += Time.deltaTime;
+
+        if (timer >= delay)
+        {
+            actualSpeed = speed[Random.Range(0, speed.Length)];
+            timer = 0;
+        }
+
+        movement.MoveTowardsBall(transform, ball, actualSpeed);
     }
 
     private void OnTriggerEnter(Collider other)

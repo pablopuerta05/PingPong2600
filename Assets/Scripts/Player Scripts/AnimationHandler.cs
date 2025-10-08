@@ -17,8 +17,8 @@ public class AnimationHandler : MonoBehaviour
     public void PlayShot(Vector3 ballDir)
     {
         if (ballDir.x >= 0)
-            animator.Play("forehand");
+            animator.Play("Forehand");
         else
-            animator.Play("backhand");
+            animator.Play("Backhand");
     }
 }
